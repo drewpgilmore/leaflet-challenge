@@ -20,15 +20,15 @@ var darkmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z
   accessToken: API_KEY
 });
 
-var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.geojson";
+var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson";
 
 d3.json(url, function(response) {
   var earthquakes = response.features;
-  for (var i = 0, i < earthquakes.length; i++) {
+  for (var i = 0; i < earthquakes.length; i++) {
     
     // declare variables for eaach record
-    var lat = earthquakes[i].geometry.coordinates[0];
-    var lon = earthquakes[i].geometry.coordinates[1];
+    var lat = earthquakes[i].geometry.coordinates[1];
+    var lon = earthquakes[i].geometry.coordinates[0];
     var depth = earthquakes[i].geometry.coordinates[2];
     var mag = earthquakes[i].properties.mag;
     var title = earthquakes[i].properties.title;
@@ -47,15 +47,14 @@ d3.json(url, function(response) {
       color = "green";
     }
 
-
     // Add circles to map
     L.circle([lat, lon], {
       fillOpacity: 0.75,
-      color: "white",
+      color: color,
       fillColor: color,
       // Adjust radius
-      radius: mag * 100
-    }).bindPopup("<h1>" + countries[i].name + "</h1> <hr> <h3>Points: " + countries[i].points + "</h3>").addTo(myMap);
+      radius: mag * 10000
+    }).bindPopup("<h1>" + title + "</h1>").addTo(myMap);
   
   }
 
