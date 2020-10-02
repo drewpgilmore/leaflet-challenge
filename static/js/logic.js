@@ -12,7 +12,7 @@ var streets = L.tileLayer(mapboxUrl, {
 });
 
 var light = L.tileLayer(mapboxUrl, {
-  id: 'light-v10', 
+  id: 'mapbox/light-v10', 
   tileSize: 512,
   maxZoom: 18, 
   zoomOffset: -1, 
@@ -21,7 +21,7 @@ var light = L.tileLayer(mapboxUrl, {
 });
 
 var dark = L.tileLayer(mapboxUrl, {
-  id: 'dark-v10', 
+  id: 'mapbox/dark-v10', 
   tileSize: 512,
   maxZoom: 18, 
   zoomOffset: -1, 
@@ -30,7 +30,7 @@ var dark = L.tileLayer(mapboxUrl, {
 });
 
 var map = L.map('map', {
-    center: [0, 0],
+    center: [40, 0],
     zoom: 2,
     layers: [streets, light, dark]
 });
@@ -102,7 +102,8 @@ d3.json(url, function(response) {
       fillOpacity: 0.50,
       color: color,
       fillColor: color,
-      radius: mag * 10000
+      stroke: false,
+      radius: mag * 15000
     }).bindPopup("<h1>" + title + "</h1>").addTo(tremors);
   
   };
