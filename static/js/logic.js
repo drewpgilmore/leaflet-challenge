@@ -2,6 +2,7 @@
 const mapboxUrl = "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}";
 const mapboxAttribution = "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>"
 
+
 var streets = L.tileLayer(mapboxUrl, {
   id: 'mapbox/streets-v11', 
   tileSize: 512,
@@ -30,43 +31,10 @@ var dark = L.tileLayer(mapboxUrl, {
 });
 
 var map = L.map('map', {
-    center: [40, 0],
+    center: [30, 0],
     zoom: 2,
-    layers: [streets, light, dark]
+    layers: [dark]
 });
-
-
-
-// Create an initial map object
-// Set the longitude, latitude, and the starting zoom level
-// var myMap = L.map("map").setView([20, 0], 2);
-
-// // Add a tile layer (the background map image) to our map
-// // Use the addTo method to add objects to our map
-// var streetMap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-//   attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
-//   tileSize: 512,
-//   maxZoom: 18,
-//   zoomOffset: -1,
-//   id: "mapbox/streets-v11",
-//   accessToken: API_KEY
-// }).addTo(myMap);
-
-// // dark map
-// var lightMap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-//   attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-//   maxZoom: 18,
-//   id: "light-v10",
-//   accessToken: API_KEY
-// });
-
-// // light map
-// var darkMap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-//   attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-//   maxZoom: 18,
-//   id: "dark-v10",
-//   accessToken: API_KEY
-// });
 
 var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson";
 
@@ -82,25 +50,32 @@ d3.json(url, function(response) {
     var depth = earthquakes[i].geometry.coordinates[2];
     var mag = earthquakes[i].properties.mag;
     var title = earthquakes[i].properties.title;
-    
+
     var color = "";
-    if (depth > 90) {
-      color = "red";
-    }
-    else if (depth > 60) {
-      color = "orange";
+    if (depth > 40) {
+      color = color1;
     }
     else if (depth > 30) {
-      color = "yellow";
+      color = color2;
+    }
+    else if (depth > 20) {
+      color = color3;
+    }
+    else if (depth > 10) {
+      color = color4;
+    }
+    else if (depth > 0) {
+      color = color5;
     }
     else {
-      color = "green";
+      color = color6;
     }
 
     // Add circles to map
     L.circle([lat, lon], {
-      fillOpacity: 0.50,
-      color: color,
+      fillOpacity: .75,
+      color: '#000000',
+      weight: 0.5,
       fillColor: color,
       stroke: false,
       radius: mag * 15000
@@ -109,7 +84,36 @@ d3.json(url, function(response) {
   };
 
 
+
 });
+
+  // // Set up the legend
+  // var legend = L.control({ position: "bottomright" });
+  // legend.onAdd = function() {
+  //   var div = L.DomUtil.create("div", "info legend");
+  //   var limits = geojson.options.limits;
+  //   var colors = geojson.options.colors;
+  //   var labels = [];
+
+  //   // Add min & max
+  //   var legendInfo = "<h1>Median Income</h1>" +
+  //     "<div class=\"labels\">" +
+  //       "<div class=\"min\">" + limits[0] + "</div>" +
+  //       "<div class=\"max\">" + limits[limits.length - 1] + "</div>" +
+  //     "</div>";
+
+  //   div.innerHTML = legendInfo;
+
+  //   limits.forEach(function(limit, index) {
+  //     labels.push("<li style=\"background-color: " + colors[index] + "\"></li>");
+  //   });
+
+  //   div.innerHTML += "<ul>" + labels.join("") + "</ul>";
+  //   return div;
+  // };
+
+  // // Adding legend to the map
+  // legend.addTo(map);
 
 var baseMaps = {
   "Light": light,
