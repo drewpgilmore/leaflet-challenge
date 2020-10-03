@@ -1,0 +1,13 @@
+#title {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 70px;
+  text-align: center;
+}
+
+#map,
+body,
+html {
+  height: 90%;
+  width: 100%;  
+}
+
